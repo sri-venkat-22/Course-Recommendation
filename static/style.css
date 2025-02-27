@@ -1,0 +1,130 @@
+/* General body styling */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #e0eafc, #cfdef3); /* Subtle gradient background */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for centering content */
+.container {
+    max-width: 700px;
+    width: 100%;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    text-align: center;
+}
+
+/* Heading styling */
+h1 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Instruction paragraph */
+p {
+    color: #7f8c8d;
+    font-size: 1.1em;
+    margin-bottom: 25px;
+}
+
+/* Input field styling */
+input[type="text"] {
+    padding: 12px 15px;
+    width: 80%;
+    max-width: 400px;
+    margin: 10px auto;
+    display: block;
+    border: 2px solid #dcdcdc;
+    border-radius: 25px;
+    font-size: 1em;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Button styling */
+button {
+    padding: 12px 30px;
+    width: 80%;
+    max-width: 200px;
+    margin: 15px auto;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+button:active {
+    transform: translateY(0); /* Return on click */
+}
+
+/* Results section styling */
+#results {
+    margin-top: 30px;
+    text-align: left;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+#results h3 {
+    color: #2c3e50;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+#results ul {
+    list-style: none;
+    padding: 0;
+}
+
+#results li {
+    padding: 10px;
+    font-size: 1em;
+    color: #34495e;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
+}
+
+#results li:last-child {
+    border-bottom: none; /* Remove border from last item */
+}
+
+#results li:hover {
+    background-color: #f1f1f1; /* Hover effect for list items */
+}
+
+/* Error message styling */
+.error {
+    color: #e74c3c;
+    font-weight: 500;
+    font-size: 1.1em;
+    margin: 10px 0;
+}
