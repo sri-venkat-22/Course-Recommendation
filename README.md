@@ -40,4 +40,4 @@ The Course Recommendation System is a web application that uses Natural Language
 
 1. **Clone the Repository:**
    ```bash
-   git clone <https://github.com/sri-venkat-22/Course-Recommendation.git>
+   git clone https://github.com/sri-venkat-22/Course-Recommendation.git
