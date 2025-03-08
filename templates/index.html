@@ -1,46 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Recommender</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course Recommendation System</title>
+  <!-- Bootstrap CSS for a modern, responsive UI -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      padding-top: 50px;
+    }
+    .spinner-border {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Course Recommendation System</h1>
-        <p>Enter a course name to get recommendations.</p>
-        <input type="text" id="courseInput" placeholder="Type a course name">
-        <button onclick="getRecommendations()">Recommend</button>
-        <div id="results"></div>
+  <div class="container">
+    <h1 class="text-center">Course Recommendation System</h1>
+    <form id="recommendForm" class="mt-4">
+      <div class="form-group">
+        <label for="courseInput">Enter Course Name:</label>
+        <input type="text" id="courseInput" name="course" class="form-control" placeholder="Start typing your course name..." list="courseSuggestions">
+        <datalist id="courseSuggestions">
+          {% for course in course_names %}
+          <option value="{{ course }}">
+          {% endfor %}
+        </datalist>
+      </div>
+      <button type="submit" class="btn btn-primary">Get Recommendations</button>
+    </form>
+    <div class="mt-4">
+      <div id="loading" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div id="errorMsg" class="alert alert-danger" style="display: none;"></div>
+      <div id="recommendations" class="mt-4"></div>
     </div>
-    <script>
-        function getRecommendations() {
-            const course = document.getElementById('courseInput').value.trim();
-            if (!course) {
-                alert("Please enter a course name.");
-                return;
-            }
-            fetch('/recommend', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `course=${encodeURIComponent(course)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                const resultsDiv = document.getElementById('results');
-                if (data.error) {
-                    resultsDiv.innerHTML = `<p class="error">${data.error}</p>`;
-                } else {
-                    let html = '<h3>Recommendations:</h3><ul>';
-                    data.recommendations.forEach(rec => {
-                        html += `<li>${rec.course_name} (${rec.similarity_score}%)</li>`;
-                    });
-                    html += '</ul>';
-                    resultsDiv.innerHTML = html;
-                }
+  </div>
+
+  <!-- jQuery and Bootstrap JS for AJAX calls and dynamic elements -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $('#recommendForm').on('submit', function(e) {
+      e.preventDefault();
+      $('#errorMsg').hide();
+      $('#recommendations').empty();
+      $('.spinner-border').show();
+      
+      var formData = $(this).serialize();
+      
+      $.ajax({
+        url: "/recommend",
+        type: "POST",
+        data: formData,
+        success: function(response) {
+          $('.spinner-border').hide();
+          if(response.recommendations) {
+            var recList = '<h3>Recommended Courses:</h3><ul class="list-group">';
+            response.recommendations.forEach(function(rec) {
+              recList += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+              recList += rec.course_name;
+              recList += '<span class="badge badge-primary badge-pill">' + rec.similarity_score + '%</span>';
+              recList += '</li>';
             });
+            recList += '</ul>';
+            $('#recommendations').html(recList);
+          } else if(response.error) {
+            $('#errorMsg').text(response.error).show();
+          }
+        },
+        error: function(xhr) {
+          $('.spinner-border').hide();
+          var errorResponse = xhr.responseJSON;
+          if(errorResponse && errorResponse.error) {
+            $('#errorMsg').text(errorResponse.error).show();
+          } else {
+            $('#errorMsg').text('An unexpected error occurred.').show();
+          }
         }
-    </script>
+      });
+    });
+  </script>
 </body>
 </html>
