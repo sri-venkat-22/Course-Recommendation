@@ -25,7 +25,7 @@ def recommend(course, num_recommendations=6):
     try:
         course_matches = new_df[new_df['course_name'].str.contains(course, case=False)]
         if len(course_matches) == 0:
-            return "Course not found."
+            return "Course not found. Please try another course name."
         course_index = course_matches.index[0]
         distances = similarity[course_index]
         course_indices = sorted(
@@ -41,6 +41,7 @@ def recommend(course, num_recommendations=6):
 
 @app.route('/', methods=['GET'])
 def index():
+    # Pass list of course names to populate suggestions
     return render_template('index.html', course_names=new_df['course_name'].tolist())
 
 @app.route('/recommend', methods=['POST'])
